@@ -10,12 +10,13 @@ export const databaseConfig = (
 ): TypeOrmModuleOptions & SeederOptions => {
     const config: TypeOrmModuleOptions & SeederOptions = {
         type: 'postgres',
-        host: configService.get<string>('POSTGRES_HOST') || 'localhost',
-        port: +(configService.get<string>('POSTGRES_PORT') || 5432),
-        username: configService.get<string>('POSTGRES_USER') || 'postgres',
-        password: configService.get<string>('POSTGRES_PASSWORD') || '',
-        database: configService.get<string>('POSTGRES_DB') || 'postgres',
-        synchronize: configService.get<string>('NODE_ENV') === 'DEVELOPMENT',
+        host: configService.getOrThrow<string>('POSTGRES_HOST'),
+        port: +configService.getOrThrow<string>('POSTGRES_PORT'),
+        username: configService.getOrThrow<string>('POSTGRES_USER'),
+        password: configService.getOrThrow<string>('POSTGRES_PASSWORD'),
+        database: configService.getOrThrow<string>('POSTGRES_DB'),
+        synchronize:
+            configService.getOrThrow<string>('NODE_ENV') === 'DEVELOPMENT',
         entities: TypeOrmModels,
         migrations: [
             path.join(process.cwd(), '../database/migrations/*{.js,.ts}'),
@@ -24,5 +25,6 @@ export const databaseConfig = (
         factories: ['src/database/seeder/factories/**/*{.ts,.js}'],
         logging: false,
     }
+
     return config
 }

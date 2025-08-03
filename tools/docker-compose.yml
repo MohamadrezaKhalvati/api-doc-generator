@@ -1,6 +1,6 @@
 services:
     postgres:
-        container_name: nest-ddd
+        container_name: doc-generator
         image: mdillon/postgis:latest
         restart: always
         environment:
